@@ -1,0 +1,36 @@
+Modelo entrenado correctamente.
+Modelo guardado en: /mnt/data/ArduinoBot_ProyIA_23310404/models/arduino_intent_model.joblib
+Respuestas guardadas en: /mnt/data/ArduinoBot_ProyIA_23310404/models/responses.joblib
+Exactitud de validación: 0.632
+
+Reporte de clasificación:
+
+                          precision    recall  f1-score   support
+
+          agradecimiento       0.20      1.00      0.33         1
+   alimentacion_caliente       1.00      1.00      1.00         2
+     analogico_inestable       1.00      1.00      1.00         1
+    bluetooth_no_conecta       0.00      0.00      0.00         2
+            boton_no_lee       1.00      1.00      1.00         2
+       codigo_no_compila       0.33      0.50      0.40         2
+               despedida       0.00      0.00      0.00         2
+     error_subida_codigo       0.00      0.00      0.00         2
+                fallback       0.00      0.00      0.00         1
+                i2c_scan       0.00      0.00      0.00         1
+          lcd_no_muestra       0.50      0.50      0.50         2
+         led_no_enciende       0.50      1.00      0.67         2
+   led_siempre_encendido       1.00      1.00      1.00         1
+monitor_serial_sin_datos       1.00      1.00      1.00         1
+        motor_dc_no_gira       1.00      0.50      0.67         2
+     puerto_no_detectado       0.67      1.00      0.80         2
+               pwm_motor       0.67      1.00      0.80         2
+          rele_no_activa       1.00      1.00      1.00         2
+                  saludo       0.50      0.50      0.50         2
+        sensor_dht_error       0.50      0.50      0.50         2
+sensor_ultrasonico_error       1.00      0.50      0.67         2
+            servo_tembla       1.00      1.00      1.00         2
+
+                accuracy                           0.63        38
+               macro avg       0.58      0.64      0.58        38
+            weighted avg       0.59      0.63      0.59        38
+

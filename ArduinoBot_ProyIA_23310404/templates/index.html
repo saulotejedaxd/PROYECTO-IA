@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArduinoBot - Diagnóstico de fallas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <section class="hero">
+            <p class="tag">Proyecto IA · CETI Mecatrónica</p>
+            <h1>ArduinoBot</h1>
+            <p>Chatbot entrenado para orientar fallas comunes en prácticas con Arduino.</p>
+        </section>
+
+        <section class="chat-card">
+            <div id="chat-box" class="chat-box">
+                <div class="message bot">
+                    Hola, soy ArduinoBot. Escribe una falla, por ejemplo: <strong>mi LED no prende</strong> o <strong>no puedo subir código</strong>.
+                </div>
+            </div>
+
+            <form id="chat-form" class="chat-form">
+                <input id="message" type="text" autocomplete="off" placeholder="Escribe tu problema con Arduino...">
+                <button type="submit">Enviar</button>
+            </form>
+        </section>
+
+        <section class="examples">
+            <h2>Ejemplos para probar</h2>
+            <button data-text="mi led no prende en el pin 13">LED no prende</button>
+            <button data-text="no puedo subir codigo, me sale avrdude error">Error al subir código</button>
+            <button data-text="mi servo tiembla con 5v">Servo tiembla</button>
+            <button data-text="mi lcd i2c no muestra nada">LCD I2C</button>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('message');
+        const chatBox = document.getElementById('chat-box');
+        const exampleButtons = document.querySelectorAll('.examples button');
+
+        function addMessage(text, role) {
+            const bubble = document.createElement('div');
+            bubble.className = `message ${role}`;
+            bubble.innerHTML = text;
+            chatBox.appendChild(bubble);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendMessage(text) {
+            if (!text.trim()) return;
+            addMessage(text, 'user');
+            input.value = '';
+
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: text})
+            });
+
+            const data = await response.json();
+            let botText = `<strong>Diagnóstico:</strong> ${data.response}`;
+            if (data.extra) {
+                botText += `<br><span class="extra">${data.extra}</span>`;
+            }
+            botText += `<br><small>Intención: ${data.intent} · Confianza: ${data.confidence}</small>`;
+            addMessage(botText, 'bot');
+        }
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            sendMessage(input.value);
+        });
+
+        exampleButtons.forEach(button => {
+            button.addEventListener('click', () => sendMessage(button.dataset.text));
+        });
+    </script>
+</body>
+</html>

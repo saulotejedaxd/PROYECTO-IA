@@ -1,0 +1,226 @@
+{
+  "project": "ArduinoBot",
+  "description": "Dataset educativo para entrenar un chatbot que diagnostica fallas comunes en proyectos con Arduino.",
+  "intents": [
+    {
+      "tag": "saludo",
+      "patterns": [
+        "hola", "buenas", "que onda", "necesito ayuda", "me puedes ayudar", "tengo un problema con arduino", "ayuda con mi circuito"
+      ],
+      "responses": [
+        "Hola, soy ArduinoBot. Escribe el problema de tu circuito o código y te doy un diagnóstico inicial.",
+        "Va, dime qué falla presenta tu proyecto: LED, motor, sensor, puerto serial, carga de código o alimentación."
+      ]
+    },
+    {
+      "tag": "despedida",
+      "patterns": [
+        "adios", "gracias adios", "nos vemos", "ya quedo", "hasta luego", "fin", "salir"
+      ],
+      "responses": [
+        "Listo. Recuerda probar una sola variable a la vez: conexión, alimentación, código y componente.",
+        "Éxito con tu práctica. Documenta la falla, la causa probable y la corrección aplicada."
+      ]
+    },
+    {
+      "tag": "agradecimiento",
+      "patterns": [
+        "gracias", "muchas gracias", "me sirvio", "excelente", "jalo", "ya funciono", "quedo"
+      ],
+      "responses": [
+        "De nada. Si vuelve a fallar, revisa primero alimentación, tierra común y configuración de pines.",
+        "Perfecto. Guarda evidencia con foto del circuito y captura del monitor serial."
+      ]
+    },
+    {
+      "tag": "led_no_enciende",
+      "patterns": [
+        "mi led no prende", "el led no enciende", "conecto un led y no funciona", "el led esta apagado", "no prende el foco", "led sin luz", "el led no parpadea", "blink no funciona"
+      ],
+      "responses": [
+        "Posibles causas: polaridad invertida del LED, resistencia mal conectada, pin incorrecto o falta de GND. Prueba con una resistencia de 220 a 330 ohm, ánodo al pin de salida y cátodo a GND.",
+        "Verifica que el pin esté declarado como OUTPUT en setup() y que el cable esté realmente conectado al pin usado en digitalWrite(). También prueba el ejemplo Blink para descartar error de código."
+      ]
+    },
+    {
+      "tag": "led_siempre_encendido",
+      "patterns": [
+        "mi led siempre queda prendido", "el led no se apaga", "led siempre encendido", "aunque pongo low sigue prendido", "mi salida queda alta", "digitalwrite low no apaga el led"
+      ],
+      "responses": [
+        "Si el LED queda siempre encendido, revisa si está conectado a 5V directo en lugar de al pin. También verifica que no estés usando lógica invertida: en algunos módulos LOW enciende y HIGH apaga.",
+        "Revisa que no haya un corto entre 5V y la terminal del LED. En el código, confirma que no haya otro digitalWrite(pin, HIGH) dentro de loop()."
+      ]
+    },
+    {
+      "tag": "error_subida_codigo",
+      "patterns": [
+        "no puedo subir codigo", "error al subir programa", "avrdude error", "programmer is not responding", "arduino no carga", "no sube el sketch", "error uploading", "stk500_recv"
+      ],
+      "responses": [
+        "Para error de carga revisa: placa correcta en Tools > Board, puerto correcto, cable USB de datos, ningún dispositivo conectado a RX/TX y presiona reset si tu placa lo requiere.",
+        "El error avrdude normalmente aparece por puerto equivocado, cable solo de carga o bootloader dañado. Prueba otro cable, otro puerto USB y cierra el Monitor Serial antes de subir."
+      ]
+    },
+    {
+      "tag": "puerto_no_detectado",
+      "patterns": [
+        "no aparece el puerto", "mi pc no reconoce arduino", "arduino no detecta puerto", "no sale com", "no veo el puerto serial", "no aparece usb serial", "windows no reconoce mi arduino"
+      ],
+      "responses": [
+        "Si no aparece el puerto, prueba otro cable USB de datos, instala el driver CH340 si tu placa es compatible genérica y verifica en Administrador de dispositivos si aparece como USB Serial.",
+        "También revisa que la placa no esté dañada o alimentada por una fuente externa mal conectada. Primero prueba solo Arduino conectado al USB, sin sensores ni motores."
+      ]
+    },
+    {
+      "tag": "monitor_serial_sin_datos",
+      "patterns": [
+        "monitor serial no muestra nada", "serial monitor vacio", "no imprime datos", "serial print no sale", "no veo datos en monitor", "el monitor serial no responde"
+      ],
+      "responses": [
+        "Verifica que exista Serial.begin(9600) o la velocidad que uses, y que el Monitor Serial tenga el mismo baud rate. También confirma que el programa sí llegue a Serial.print().",
+        "Si usas sensores, imprime primero un mensaje fijo como Serial.println(\"inicio\"). Si eso aparece, el problema está en la lectura del sensor, no en el monitor serial."
+      ]
+    },
+    {
+      "tag": "motor_dc_no_gira",
+      "patterns": [
+        "mi motor no gira", "motor dc no funciona", "el motor no prende", "conecto motor y no se mueve", "motor no arranca", "no gira el motor", "el puente h no mueve el motor"
+      ],
+      "responses": [
+        "Un pin de Arduino no debe alimentar directamente un motor DC. Usa driver como L298N, L293D, TB6612FNG o transistor/MOSFET con diodo de protección. Revisa fuente externa y tierra común con Arduino.",
+        "Si usas puente H, verifica ENA/ENB, IN1/IN2, alimentación del motor y GND común. Prueba primero el motor directo con su fuente para descartar que esté dañado."
+      ]
+    },
+    {
+      "tag": "servo_tembla",
+      "patterns": [
+        "mi servo tiembla", "servo se mueve solo", "servo vibra", "servo hace ruido", "servo no se queda quieto", "servo loco", "servo se traba"
+      ],
+      "responses": [
+        "El servo puede temblar por falta de corriente. Usa fuente externa adecuada para el servo y une GND de la fuente con GND de Arduino. Evita alimentarlo desde el pin de 5V si consume mucho.",
+        "También revisa que la señal esté en un pin correcto y que no estés mandando ángulos fuera de rango. Prueba con el ejemplo Sweep de la librería Servo."
+      ]
+    },
+    {
+      "tag": "sensor_ultrasonico_error",
+      "patterns": [
+        "hc sr04 no mide", "sensor ultrasonico no funciona", "me da distancia cero", "me da distancia rara", "ultrasonico marca mal", "distancia negativa", "sensor de distancia no lee"
+      ],
+      "responses": [
+        "En el HC-SR04 revisa VCC a 5V, GND, TRIG y ECHO en los pines correctos. El cálculo típico usa distancia_cm = duracion * 0.0343 / 2.",
+        "Si da valores raros, evita superficies inclinadas o absorbentes, revisa tierra común y agrega un pequeño delay entre lecturas. También confirma que TRIG salga por 10 microsegundos."
+      ]
+    },
+    {
+      "tag": "sensor_dht_error",
+      "patterns": [
+        "dht11 no lee", "dht22 no funciona", "sensor de temperatura marca nan", "humedad nan", "dht da error", "temperatura no aparece", "sensor dht marca mal"
+      ],
+      "responses": [
+        "Cuando un DHT muestra NaN suele ser por pin incorrecto, librería equivocada, mala alimentación o falta de resistencia pull-up. Revisa si tu sensor es DHT11 o DHT22 y configura el tipo correcto.",
+        "Prueba con el ejemplo oficial de la librería DHT. Si usas módulo de 3 pines normalmente ya trae pull-up; si usas sensor suelto, agrega una resistencia de 10 kohm entre VCC y DATA."
+      ]
+    },
+    {
+      "tag": "rele_no_activa",
+      "patterns": [
+        "rele no activa", "relay no funciona", "modulo rele no prende", "el rele no conmuta", "relevador no hace click", "relay siempre prendido", "mi rele se activa al reves"
+      ],
+      "responses": [
+        "Muchos módulos de relevador usan lógica activa en bajo: LOW activa y HIGH desactiva. Revisa si tu módulo funciona así antes de cambiar todo el código.",
+        "Si no hace clic, verifica VCC, GND, pin IN y corriente suficiente. Para cargas de corriente alterna, no manipules conexiones energizadas sin supervisión y aislamiento adecuado."
+      ]
+    },
+    {
+      "tag": "lcd_no_muestra",
+      "patterns": [
+        "lcd no muestra nada", "pantalla lcd en blanco", "lcd con cuadros", "lcd i2c no funciona", "display lcd no imprime", "mi pantalla no prende", "lcd solo muestra bloques"
+      ],
+      "responses": [
+        "Si el LCD muestra cuadros, ajusta el potenciómetro de contraste. Si es I2C, ejecuta un scanner I2C para confirmar la dirección, normalmente 0x27 o 0x3F.",
+        "Verifica SDA y SCL según tu placa. En Arduino UNO, SDA es A4 y SCL es A5. También confirma la dirección usada en LiquidCrystal_I2C."
+      ]
+    },
+    {
+      "tag": "bluetooth_no_conecta",
+      "patterns": [
+        "bluetooth no conecta", "hc05 no funciona", "hc06 no enlaza", "no recibo datos por bluetooth", "modulo bluetooth no responde", "app no conecta al hc05", "bluetooth arduino error"
+      ],
+      "responses": [
+        "En HC-05/HC-06 revisa cruce TX-RX: TX del módulo a RX de Arduino y RX del módulo a TX de Arduino, usando divisor de voltaje hacia RX del módulo si trabaja a 3.3V lógico.",
+        "Si no conecta, revisa baud rate, PIN de emparejamiento, alimentación estable y que no esté abierto el Monitor Serial usando los mismos pines."
+      ]
+    },
+    {
+      "tag": "boton_no_lee",
+      "patterns": [
+        "mi boton no funciona", "boton siempre marca uno", "boton siempre marca cero", "push button no lee", "entrada digital falla", "boton rebota", "lectura de boton inestable"
+      ],
+      "responses": [
+        "Para botones usa INPUT_PULLUP o una resistencia pull-down/pull-up externa. Con INPUT_PULLUP el botón normalmente lee HIGH y al presionarlo lee LOW.",
+        "Si la lectura brinca, es rebote mecánico. Agrega debounce por software con millis() o un pequeño capacitor si el circuito lo permite."
+      ]
+    },
+    {
+      "tag": "analogico_inestable",
+      "patterns": [
+        "entrada analogica inestable", "analogread cambia mucho", "potenciometro da valores raros", "sensor analogico no estable", "lectura analogica con ruido", "adc arduino varia"
+      ],
+      "responses": [
+        "Las entradas analógicas flotan si no están conectadas. Revisa GND común y conexiones firmes. Puedes promediar varias lecturas para reducir ruido.",
+        "Para un potenciómetro, conecta extremos a 5V y GND, y el pin central a la entrada analógica. Si el valor salta, revisa falso contacto o cables largos."
+      ]
+    },
+    {
+      "tag": "i2c_scan",
+      "patterns": [
+        "como escanear i2c", "direccion i2c", "no se direccion de lcd", "scanner i2c", "detectar direccion i2c", "i2c no detecta dispositivo"
+      ],
+      "responses": [
+        "Ejecuta un I2C scanner para encontrar la dirección del módulo. Si no aparece nada, revisa SDA, SCL, VCC, GND y que el módulo trabaje con el voltaje correcto.",
+        "En Arduino UNO, SDA está en A4 y SCL en A5. Si usas Mega o ESP32, los pines cambian, así que debes revisar el pinout de la placa."
+      ]
+    },
+    {
+      "tag": "codigo_no_compila",
+      "patterns": [
+        "mi codigo no compila", "error de compilacion", "expected semicolon", "no matching function", "stray", "error en codigo arduino", "me marca error al compilar"
+      ],
+      "responses": [
+        "Los errores de compilación suelen venir por punto y coma faltante, llaves mal cerradas, librería no instalada o nombre de variable diferente. Lee la primera línea roja del error, no solo la última.",
+        "Comenta partes del código hasta ubicar dónde empieza el error. También revisa que las librerías estén instaladas desde Library Manager y que uses ejemplos compatibles."
+      ]
+    },
+    {
+      "tag": "alimentacion_caliente",
+      "patterns": [
+        "arduino se calienta", "regulador caliente", "huele a quemado", "fuente se calienta", "mi placa calienta mucho", "se quema arduino", "componente caliente"
+      ],
+      "responses": [
+        "Si algo se calienta demasiado, desconecta la alimentación. Revisa polaridad, cortocircuitos, consumo de motores/servos y que no estés alimentando cargas grandes desde el 5V del Arduino.",
+        "Mide voltaje antes de volver a conectar. Los motores, servos y relevadores deben usar fuente adecuada y compartir GND con Arduino, no consumir todo desde la placa."
+      ]
+    },
+    {
+      "tag": "pwm_motor",
+      "patterns": [
+        "controlar velocidad de motor", "pwm motor", "analogwrite motor", "variar velocidad", "motor con pwm", "bajar velocidad del motor", "control de velocidad arduino"
+      ],
+      "responses": [
+        "Para controlar velocidad usa PWM con analogWrite() en un pin PWM, pero el motor debe ir mediante driver o MOSFET. No conectes el motor directamente al pin.",
+        "En Arduino UNO los pines PWM comunes son 3, 5, 6, 9, 10 y 11. analogWrite(pin, valor) usa valores de 0 a 255."
+      ]
+    },
+    {
+      "tag": "fallback",
+      "patterns": [
+        "no entiendo", "otra falla", "problema raro", "diagnostico desconocido"
+      ],
+      "responses": [
+        "No tengo suficiente información. Describe componente, síntoma, alimentación, placa usada y qué probaste. Ejemplo: 'mi LED no prende en pin 13'.",
+        "Dame más datos: ¿qué componente falla, qué placa usas, qué voltaje aplicas y qué mensaje aparece en consola o monitor serial?"
+      ]
+    }
+  ]
+}

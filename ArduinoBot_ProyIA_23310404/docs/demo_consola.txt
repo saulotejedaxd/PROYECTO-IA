@@ -1,0 +1,15 @@
+ArduinoBot listo. Escribe una falla o 'salir' para terminar.
+
+Tú: mi led no prende en el pin 13
+ArduinoBot: Verifica que el pin esté declarado como OUTPUT en setup() y que el cable esté realmente conectado al pin usado en digitalWrite(). También prueba el ejemplo Blink para descartar error de código.
+Pista extra: Detecté que mencionas el pin 13; confirma que coincide con el código.
+[intención=led_no_enciende | confianza=0.153]
+
+Tú: no puedo subir codigo, me sale avrdude error
+ArduinoBot: El error avrdude normalmente aparece por puerto equivocado, cable solo de carga o bootloader dañado. Prueba otro cable, otro puerto USB y cierra el Monitor Serial antes de subir.
+[intención=error_subida_codigo | confianza=0.191]
+
+Tú: mi servo tiembla con 5v
+ArduinoBot: El servo puede temblar por falta de corriente. Usa fuente externa adecuada para el servo y une GND de la fuente con GND de Arduino. Evita alimentarlo desde el pin de 5V si consume mucho.
+Pista extra: Detecté una alimentación de 5 V; revisa que sea compatible con el módulo.
+[intención=servo_tembla | confianza=0.161]

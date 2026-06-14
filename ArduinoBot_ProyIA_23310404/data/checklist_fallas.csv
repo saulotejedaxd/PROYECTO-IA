@@ -1,0 +1,11 @@
+componente,sintoma,revision_prioritaria,riesgo
+LED,no enciende,polaridad resistencia y pin,bajo
+Motor DC,no gira,driver fuente externa y GND comun,medio
+Servo,tiembla,fuente externa corriente suficiente,medio
+HC-SR04,distancia rara,TRIG ECHO calculo y superficie,bajo
+DHT11/DHT22,NaN,tipo de sensor pin y pull-up,bajo
+Relevador,no conmuta,logica activa en bajo y alimentacion,alto si hay corriente alterna
+LCD I2C,no muestra,direccion I2C contraste SDA SCL,bajo
+Bluetooth HC-05,no conecta,TX RX baud rate y emparejamiento,bajo
+Arduino,no sube codigo,puerto placa cable y RX/TX,bajo
+Arduino,se calienta,corto polaridad y consumo,alto
